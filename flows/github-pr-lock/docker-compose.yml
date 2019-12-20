@@ -1,0 +1,18 @@
+services:
+  proposer:
+    container: ../../dao-proposer
+    links:
+      - txPayer
+    ports:
+      - 5002:5002
+    environment:
+      template: "{ title: \"PR #${prId}: Proposer ${prProposer}\"..."
+      txPayer: txPayer:5001
+  txPayer:
+    links:
+      - proposer
+    ports:
+      - 5001:5001
+    environment:
+      purpose: "GitHub PR Lock"
+      proposer: proposer:5002
